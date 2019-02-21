@@ -24,7 +24,8 @@ class TodoList(Resource):
 
     Usage::
     For retrieving todo list:
-        curl http://127.0.0.1:5000/todolists/<list_id>
+        curl http://127.0.0.1:5000/todolists/<list_id> \
+        -H "Content-Type: application/json"
 
     For updating todo list:
         curl -X PUT http://127.0.0.1:5000/todolists/<list_id> \
@@ -45,7 +46,6 @@ class TodoList(Resource):
         result = db.find_one({"_id": ObjectId(list_id)})
         if result is None:
             return {"msg": "No such list found"}, 404
-        # print(json_util.dumps(result))
         return result
 
     def put(self, list_id):
@@ -92,7 +92,7 @@ class TodoListCollection(Resource):
         """
         Returns collection of todo lists.
         """
-        return json_util.dumps([item for item in db.find({})])
+        return [item for item in db.find({})]
 
     def post(self):
         """
